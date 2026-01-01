@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>validatiion project</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: lightblue;
+        }
+
+        .containar {
+            width: 500px;
+            margin: 10rem 25rem;
+            height: 480px;
+            background-color: #fff;
+            border-radius: 15px;
+            padding: 1rem 0;
+
+        }
+
+        .validation {
+            margin: 1rem;
+            padding: 0 2rem;
+            position: relative;
+        }
+
+        .validation label {
+            text-align: start;
+            padding: 2rem 0;
+            border: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .validation input {
+            border: none;
+            padding: 15px 5px;
+            font-size: 13px;
+            font-style: italic;
+            color: #948d8d;
+            outline: none;
+            box-shadow: none;
+            margin-left: 3rem;
+            text-transform: capitalize;
+        }
+
+        .validation textarea {
+            margin-top: 1rem;
+            padding: 2rem 0;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        i {
+            color: green;
+            font-size: 2rem;
+            border-radius: 50%;
+            max-height: 20px;
+            max-width: 20px;
+
+        }
+        .validation span {
+
+            position: absolute;
+            top: .9rem;
+            right: 5rem;
+            font-size: 12px;
+            color: #a40f0f;
+
+        }
+        #submitError{
+               color: #a40f0f;
+             text-align: center;
+             margin-top: -3rem;
+        }
+
+        .submit {
+            outline: none;
+            border: none;
+            width: 100px;
+            padding: 1rem 2rem;
+            background-color: rgb(89, 213, 255);
+            color: #fff;
+            cursor: pointer;
+            border-radius: 15px;
+            border: 1px solid rgb(210, 201, 201);
+            font-size: 18px;
+            margin: 1rem 3rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="containar">
+        <form>
+            <div class="validation">
+                <label> Full Name</label>
+                <input type="text" placeholder="enter you Name" id="contactName" onkeyup=" validateName()"><br>
+                <span id="errorName"></span>
+            </div>
+
+            <div class="validation">
+                <label> Phone No</label>
+                <input type="tel" placeholder="enter you Phone" id="contact-phone" onkeyup="validatePhone()"><br>
+                <span id="errorPhone"></span>
+            </div>
+
+            <div class="validation">
+                <label> Email Id </label>
+                <input type="email" placeholder="enter you Email" id="contact-email" onkeyup=" validateEmial()"><br>
+                <span id="errorEmail"></span>
+            </div>
+
+            <div class="validation">
+                <label>Your massage</label>
+                <textarea rows="3" placeholder="enter you massage" id="contact-massage" onkeyup="validatemassage()"></textarea><br>
+                <span id="errorMassage"></span>
+
+            </div>
+
+            <button class="submit" onclick="validateForm()">submit</button>
+            <span id="submitError"> </span>
+        </form>
+
+
+    </div>
+    <script>
+
+
+        let phone = document.getElementById("errorPhone")
+        let email = document.getElementById("errorEmail")
+        let massage = document.getElementById("errorMassage")
+        let button=document.getElementById("submitError")
+
+
+        function validateName() {
+            let name = document.getElementById("contactName").value
+            let errorName = document.getElementById("errorName")
+
+            if (name.length === 0) {
+                errorName.innerHTML = "name is reqiured"
+                return false;
+            }
+            if (!name.match(/^[A-Za-z]+(\s[A-Za-z]+)+$/)) {
+                errorName.innerHTML = "write fuul Name"
+                return false
+
+            }
+            errorName.innerHTML = '<i class="fa-solid fa-check"></i>'
+            return true;
+        }
+            
+         function validatePhone(){
+            let phone = document.getElementById("contact-phone").value
+            let errorPhone = document.getElementById("errorPhone")
+
+            if(phone.length == 0){
+                errorPhone.innerHTML = "phone is no required"
+                return false
+            }
+            if(phone.length !== 10){
+                errorPhone.innerHTML = "phone is only 10 digit"
+                return false
+            }
+            if (!phone.match(/^[0-9]{10}$/)) {
+                errorPhone.innerHTML = "phone is must ten bitis"
+                return false
+            }
+              errorPhone.innerHTML = '<i class="fa-solid fa-check"></i>'
+               return true
+         }
+         function validateEmial(){
+            let email =document.getElementById("contact-email").value
+            let errorEmail = document.getElementById("errorEmail")
+            if(email.length ==0 ){
+                errorEmail.innerHTML = "email is reqiured"
+                return false
+            } 
+            if  (!email.match(/^[A-za-z\._\-[0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/)){
+                errorEmail.innerHTML = "enter valid email"
+                return false
+            }
+            errorEmail .innerHTML ='<i class="fa-solid fa-check"></i>'
+            return true
+         }
+         function validatemassage(){
+            let massage = document.getElementById ("contact-massage").value
+            let errorMassage = document.getElementById("errorMassage")
+            // let required =30
+            // let left = required - massage.length
+            if(errorMassage == ""){
+                errorMassage.innerHTML ="massage is required"
+                return false
+            }
+            errorMassage.innerHTML = '<i class="fa-solid fa-check"></i>'
+            return true
+         }
+         function validateForm(){
+            if(!validateName() || !validatePhone() || !validateEmial() || !validatemassage() ){
+                submitError.style.display = "block"
+                submitError.innerHTML = "please fixed error"
+                setTimeout(function(){  submitError.style.display = "none"},  3000)
+                return false
+            }
+         }
+    </script>
+</body>
+
+</html>

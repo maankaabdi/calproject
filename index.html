@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>typing</title>
+    <style>
+        * {
+            padding: 0%;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .containar {
+            max-width: 550px;
+            height: 600px;
+            background-color: aliceblue;
+            box-shadow: 2px 2px 2px 2px rgb(238, 228, 228);
+            border-radius: 10px;
+            margin: 10rem 25rem;
+        }
+
+        .containar h2 {
+            padding: 4rem;
+            font-size: 20px;
+            font-weight: 600;
+            text-transform: capitalize;
+            text-align: center;
+        }
+
+        .containar .spen {
+            background: rgb(214, 214, 206);
+            font-style: italic;
+            text-transform: capitalize;
+            font-size: 16px;
+            padding: 0 4rem;
+            margin: 0 4rem;
+            font-weight: 600;
+        }
+
+        .typing-con {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .typing-con form textarea {
+            background: #ffff;
+            font-weight: 300;
+            border: none;
+            display: block;
+            margin: 10px;
+            width: 250px;
+            height: 150px;
+            padding: 1rem 2rem;
+            margin-top: 2rem;
+            border-radius: 10px;
+            border: 1px solid rgb(243, 235, 235);
+        }
+
+        .typing-con button {
+            outline: none;
+            cursor: pointer;
+            display: block;
+            width: 120px;
+            text-align: center;
+            padding: 6px 15px;
+            border-radius: 10px;
+            color: aliceblue;
+            margin: 2px;
+            background: #37e643ba;
+            font-size: 18px;
+            border: 1px solid rgb(227, 223, 223);
+
+
+        }
+
+        .account {
+            margin: 2rem;
+            display: flex;
+        }
+
+        #text {
+            text-align: center;
+            text-transform: capitalize;
+            font-size: 16px;
+            padding: 5px;
+            width: 540px;
+            line-height: 1.4rem;
+            color: rgb(38, 39, 44);
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+        
+        button.stopBtn{
+           background-color: rgb(218, 70, 70);
+        }
+        #wpm  {
+           text-align: center;
+            text-transform: capitalize;
+            font-size: 15px;
+            margin-bottom: 1rem;
+          
+        }
+
+        #Accuracy {
+             text-align: center;
+            text-transform: capitalize;
+            font-size: 15px;
+           
+        }
+    </style>
+</head>
+
+<body>
+    <div class="containar">
+        <h2>Typing Speed Test</h2>
+        <p id="text">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum officiis corrupti
+            qui aspernatur obcaecati ipsam inventore ad odit error alias!
+        </p>
+        <span class="spen">Click "Start" to begin!</span>
+        <div class="typing-con">
+            <form>
+                <textarea disabled id="textarea">  </textarea>
+                <p><span id="wpm">wpm:</span></p>
+                <P> <span id="Accuracy">Acurancy :</span> /100%</P>
+                <div class="account">
+                    <button class="startBtn"> start </button>
+                    <button class="stopBtn" disabled> stop </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        let wpmEl = document.querySelector("#wpm");
+        let accuracyEl = document.querySelector("#Accuracy");
+        let textarea = document.querySelector("#textarea");
+        let startBtn = document.querySelector(".startBtn");
+        let stopBtn = document.querySelector(".stopBtn");
+        let text = document.querySelector("#text").innerText;
+
+        let isRunning = false;
+        let startTime;
+
+        startBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            textarea.disabled = false;
+            textarea.value = "";
+            textarea.focus();
+
+            startTime = new Date();
+            isRunning = true;
+
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+
+            wpmEl.innerText = 0;
+            accuracyEl.innerText = "0%";
+        });
+
+        stopBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            textarea.disabled = true;
+            isRunning = false;
+
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+        });
+
+        textarea.addEventListener("input", () => {
+            if (!isRunning) return;
+
+            const typedText = textarea.value;
+            const currentTime = new Date();
+            const timeDiff = (currentTime - startTime) / 60000;
+
+            const words = typedText.trim().split(/\s+/).filter(w => w !== "");
+            const wpm = Math.round(words.length / timeDiff) || 0;
+            wpmEl.innerText = wpm;
+
+            let correctChars = 0;
+            for (let i = 0; i < typedText.length; i++) {
+                if (typedText[i] === text[i]) correctChars++;
+            }
+
+            const accuracy = Math.round((correctChars / typedText.length) * 100) || 0;
+            accuracyEl.innerText = accuracy + "%";
+        });
+    </script>
+</body>
+
+</html>
